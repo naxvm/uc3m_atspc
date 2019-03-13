@@ -1,4 +1,4 @@
-import aux
+import _aux as aux
 
 
 def hard(sequences, G):

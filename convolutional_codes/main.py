@@ -8,7 +8,7 @@ import matplotlib.pylab as plt
 import encoding
 import channel
 import decoding
-import aux
+import _aux as aux
 
 # ----------------------------- parameters
 
@@ -32,7 +32,7 @@ Eb_N0s_dBs = np.arange(12)
 Eb_N0s = 10 ** (Eb_N0s_dBs / 10)
 
 # a `numpy` array to store every computed BER [<with/without coding>, <EbN0>, <frame>]
-BER = np.empty((2, len(Eb_N0s_dBs), len(n_frames)))
+BER = np.empty((2, len(Eb_N0s_dBs), n_frames))
 
 # for every simulated frame...
 for i_frame in range(n_frames):
@@ -40,10 +40,14 @@ for i_frame in range(n_frames):
 	print('processing frame {}'.format(i_frame))
 
 	# TODO: a random sequence of bits is generated
-	# sequence = ...
-
+	# sequence = np.random.randint(0,1,n_bits_per_frame)
+    
+	sequence = [0, 1, 1, 1, 0]
+    
 	# the sequence is encoded
 	encoded_sequence = encoding.conv_encoding(G, sequence)
+
+	print(encoded_sequence)
 
 	# for every EbN0 to be tested...
 	for i_ebn0, ebn0 in enumerate(Eb_N0s):

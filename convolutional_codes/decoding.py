@@ -8,13 +8,13 @@ def hard(sequences, G):
 
 	n_outputs = len(G) #Numero de columnas de G
 
-	states = len(G[0])-1 #grado del polinomio - 1
+	states = state_and_input_to_state.copy().keys() #grado del polinomio - 1
 
 	# TODO: ...and the possible inputs
-	inputs = ['0','1'] ##TODO
+	inputs =  	##TODO
 
 	# TODO: number of Viterbi stages is computed from the length of the sequence(s) and the number of outputs
-	# n_stages =
+	n_stages = 2**len(G[0])
 
 	# TODO: initialization
 	# ...

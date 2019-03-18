@@ -10,6 +10,9 @@ import channel
 import decoding
 import _aux as aux
 
+#Define random seed
+np.random.seed(1)
+
 # ----------------------------- parameters
 
 # the specific values given below are just examples, and you can try different ones
@@ -41,9 +44,9 @@ for i_frame in range(n_frames):
 
 	# TODO: a random sequence of bits is generated
 	# sequence = np.random.randint(0,1,n_bits_per_frame)
-    
+
 	sequence = [0, 1, 1, 1, 0]
-    
+
 	# the sequence is encoded
 	encoded_sequence = encoding.conv_encoding(G, sequence)
 
@@ -54,8 +57,10 @@ for i_frame in range(n_frames):
 
 		# ================= *with* coding
 
+		r=1.0/len(G) ##Para cualquier G
+
 		# the probability of error is computed from the EbN0
-		Pe = aux.q_function(math.sqrt(ebn0))
+		Pe = aux.q_function(math.sqrt(ebn0*r))
 
 		# transmission is simulated
 		received_sequence = channel.binary_symmetric(encoded_sequence, Pe)

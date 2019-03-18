@@ -11,7 +11,6 @@ def conv_encoding(G, sequences):
         output.append(aux_output)
         #Actualizamos estados
         status = inp[:-1]
-
     return output
 
 

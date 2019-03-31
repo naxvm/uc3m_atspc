@@ -21,7 +21,7 @@ np.random.seed(1)
 n_frames = 100
 
 # length of each frame
-n_bits_per_frame = 10000
+n_bits_per_frame = 500
 
 # generating matrix
 G = [[1, 0, 1], [1, 1, 1]]
@@ -43,20 +43,19 @@ for i_frame in range(n_frames):
 	print('processing frame {}'.format(i_frame))
 
 	# TODO: a random sequence of bits is generated
-	# sequence = np.random.randint(0,1,n_bits_per_frame)
+	sequence = np.random.randint(0,2,n_bits_per_frame)
 
-	sequence = [0, 1, 1, 1, 0]
 
 	# the sequence is encoded
 	encoded_sequence = encoding.conv_encoding(G, sequence)
 
-	print(encoded_sequence)
+	# print(encoded_sequence)
 
 	# for every EbN0 to be tested...
 	for i_ebn0, ebn0 in enumerate(Eb_N0s):
 
 		# ================= *with* coding
-
+		print("Eb_N0: ", ebn0)
 		r=1.0/len(G) ##Para cualquier G
 
 		# the probability of error is computed from the EbN0
@@ -68,8 +67,7 @@ for i_frame in range(n_frames):
 		# decoding
 		decoded_sequence = decoding.hard(received_sequence, G)
 
-		# TODO: the BER is computed
-		# BER[0, i_ebn0, i_frame] = ...
+		BER[0, i_ebn0, i_frame] = aux.hamming_distance(sequence, decoded_sequence)
 
 		# ================= *without* coding
 
@@ -80,7 +78,7 @@ for i_frame in range(n_frames):
 		received_sequence = channel.binary_symmetric(sequence, Pe)
 
 		# TODO: the BER is computed
-		# BER[1, i_ebn0, i_frame] = ...
+		BER[1, i_ebn0, i_frame] = aux.hamming_distance(received_sequence, sequence)
 
 # average BER over all the frames
 average_BER = BER.mean(axis=2)

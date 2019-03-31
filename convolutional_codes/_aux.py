@@ -52,3 +52,8 @@ def trellis_from_generating_matrix(G):
 	#state_and_input_to_output = {'00': {'0': '01'}}
 
 	return state_and_input_to_state, state_and_input_to_output
+
+def hamming_distance(s1, s2):
+    """Calculate the Hamming distance between two bit strings"""
+    assert len(s1) == len(s2)
+    return sum(c1 != c2 for c1, c2 in zip(s1, s2))

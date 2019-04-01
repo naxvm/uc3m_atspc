@@ -1,7 +1,7 @@
 import numpy as np
 def conv_encoding(G, sequences):
 
-    status = list(np.zeros(len(G), dtype=int))
+    status = list(np.zeros(len(G[0])-1, dtype=int))
     output = []
     for bit in sequences:
         inp = [bit]+status

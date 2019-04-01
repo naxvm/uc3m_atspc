@@ -21,7 +21,7 @@ np.random.seed(1)
 n_frames = 100
 
 # length of each frame
-n_bits_per_frame = 10000
+n_bits_per_frame = 1000
 
 # generating matrix
 G = [[1, 0, 1], [1, 1, 1]]
@@ -69,7 +69,7 @@ for i_frame in range(n_frames):
 		# decoding
 		decoded_sequence = decoding.hard(received_sequence, G)
 
-		BER[0, i_ebn0, i_frame] = aux.hamming_distance(sequence, decoded_sequence)
+		BER[0, i_ebn0, i_frame] = aux.hamming_distance(sequence, decoded_sequence)/n_bits_per_frame
 
 		# ================= *without* coding
 
@@ -80,7 +80,7 @@ for i_frame in range(n_frames):
 		received_sequence = channel.binary_symmetric(sequence, Pe)
 
 		# TODO: the BER is computed
-		BER[1, i_ebn0, i_frame] = aux.hamming_distance(received_sequence, sequence)
+		BER[1, i_ebn0, i_frame] = aux.hamming_distance(received_sequence, sequence)/n_bits_per_frame
 
 # average BER over all the frames
 average_BER = BER.mean(axis=2)
@@ -93,6 +93,7 @@ ax.set_xlabel('SNR (dB)')
 ax.set_ylabel('BER')
 ax.xaxis.grid(True)
 ax.grid(which = 'minor')
+plt.legend(['Without coding', 'With coding'], loc='best')
 
 # figure is saved
 plt.savefig('BER{}.pdf'.format(n_bits_per_frame))

@@ -21,7 +21,7 @@ np.random.seed(1)
 n_frames = 100
 
 # length of each frame
-n_bits_per_frame = 500
+n_bits_per_frame = 10000
 
 # generating matrix
 G = [[1, 0, 1], [1, 1, 1]]
@@ -42,7 +42,7 @@ for i_frame in range(n_frames):
 
 	print('processing frame {}'.format(i_frame))
 
-	# TODO: a random sequence of bits is generated
+	# A random sequence of bits is generated
 	sequence = np.random.randint(0,2,n_bits_per_frame)
 
 
@@ -55,11 +55,13 @@ for i_frame in range(n_frames):
 	for i_ebn0, ebn0 in enumerate(Eb_N0s):
 
 		# ================= *with* coding
-		print("Eb_N0: ", ebn0)
+		#print("Eb_N0: ", ebn0)
 		r=1.0/len(G) ##Para cualquier G
 
+		m=1
+
 		# the probability of error is computed from the EbN0
-		Pe = aux.q_function(math.sqrt(ebn0*r))
+		Pe = aux.q_function(math.sqrt(ebn0 * 2 * m * r))
 
 		# transmission is simulated
 		received_sequence = channel.binary_symmetric(encoded_sequence, Pe)
@@ -72,7 +74,7 @@ for i_frame in range(n_frames):
 		# ================= *without* coding
 
 		# the probability of error is computed from the EbN0
-		Pe = aux.q_function(math.sqrt(2*ebn0))
+		Pe = aux.q_function(math.sqrt(2*m*ebn0))
 
 		# the simulated sequence is transmitted as is
 		received_sequence = channel.binary_symmetric(sequence, Pe)
@@ -84,7 +86,13 @@ for i_frame in range(n_frames):
 average_BER = BER.mean(axis=2)
 
 # TODO: plotting
-# plt.semilogy()
+fig, ax = plt.subplots()
+ax.semilogy(Eb_N0s_dBs,average_BER[0,:], Eb_N0s_dBs,average_BER[1,:])
+ax.set_title('BER vs. SNR')
+ax.set_xlabel('SNR (dB)')
+ax.set_ylabel('BER')
+ax.xaxis.grid(True)
+ax.grid(which = 'minor')
 
 # figure is saved
-plt.savefig('BER.pdf')
+plt.savefig('BER{}.pdf'.format(n_bits_per_frame))
